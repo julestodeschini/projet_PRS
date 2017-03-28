@@ -19,7 +19,7 @@
         <script src="js/leaflet-src.js"></script>
         <script src="js/pouchdb-6.1.2.js"></script>
 
-        <script src="js/L.TileLayer.PouchDBCached.js"></script>
+        <script src="js/tile_cached.js"></script>
         <script>
 
             // 		var map = L.map('map').setView([63.41784,10.40359], 5);
@@ -54,23 +54,10 @@
 
             layer.addTo(map);
 
-            /*		var wmsLayer = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-			layers: 'nexrad-n0r-900913',
-			format: 'image/png',
-			transparent: true,
-			attribution: "Weather data © 2012 IEM Nexrad",
-
-			useCache: true,
-			maxAge: 30 * 1000,	// 30 seconds
-			crossOrigin: true
-		});
-
-		wmsLayer.addTo(map);*/
 
 
 
-
-            // Seed the base layer, for the whole world, for zoom levels 0 through 4.
+            // stocke en mémoire cache les fonds de map de la vue séléctionner par l'utilisateur dans PouchDB
             function seed() {
                 var bbox = map.getBounds();// la partie de la map que veut l'utilisateur
 
@@ -78,7 +65,7 @@
 
             }
 
-            // Display seed progress on console
+            // affiche une progression dans la console
             layer.on('seedprogress', function(seedData){
                 var percent = 100 - Math.floor(seedData.remainingLength / seedData.queueLength * 100);
                 console.log('Seeding ' + percent + '% done');
@@ -87,19 +74,35 @@
                 console.log('Cache seeding complete');
             });
 
-////////////////////////////////TEST BASE DE :;DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
+////////////////////////////////TEST BASE DE DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
 
             var prsDB = new PouchDB('localDB');
 
-            // Donnes les infos sur la base de données nombre de docs etc
+            ////////////////////////////////////////////////////////
 
+            // localDB.sync(remoteDB, {
+            //   live: true,
+            //   retry: true
+            // }).on('change', function (change) {
+            //   // yo, something changed!
+            // }).on('paused', function (info) {
+            //   // replication was paused, usually because of a lost connection
+            // }).on('active', function (info) {
+            //   // replication was resumed
+            // }).on('error', function (err) {
+            //   // totally unhandled error (shouldn't happen)
+            // });
+
+          /////////////////////////////////////////////////////////////
+          
             prsDB.info().then(function (info) {
                 console.log(info);
+                // Donnes les infos sur la base de données nombre de docs etc
             })
 
             // recupere les infos sur un prs en fonction de sont id
 
-            prsDB.get("cef41ea3701f8e4274a935cb14161c9b", function(err, doc) { 
+            prsDB.get("cef41ea3701f8e4274a935cb14161c9b", function(err, doc) {
                 if (err) {
                     return console.log(err);
                 } else {
@@ -107,7 +110,7 @@
                 }
             });
 
-            
+
             prsDB.allDocs({include_docs: true}, function(err, docs) {
                 if (err) {
                     return console.log(err);
@@ -116,16 +119,8 @@
                     console.log(prs);
                 }
             });
-//////
-///////////////////////////////////////////test pour repliqué une bdd serveur coté client///////////////////////////////////////
-/////
-            
-/*            var test= new PouchDB('essai');
-            var remoteDB = new PouchDB('http://localhost:5984/prs25_test');
-            test.replicate.from(remoteDB);*/
-            
 
-            
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
