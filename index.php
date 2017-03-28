@@ -119,7 +119,10 @@
                         
                         var numberPrs = element.doc.NUM;
                         console.log ( "la latitude du point "+numberPrs+ " est "+ latitudePrs + "la longitude du point courant est :"+ longitudePrs);
-                        var marker = L.marker([ longitudePrs , latitudePrs]).addTo(map);
+                                                var popup = L.popup({minWidth:100},{keepInView:"true"}).setContent("nom: " +numberPrs + "<br />" + "commune: "+location + "<br />" + "descriptif: "+descriptif );
+
+                        var marker = L.marker([longitudePrs , latitudePrs]).addTo(map);
+                        marker.bindPopup(popup);
                         
                     });
 
