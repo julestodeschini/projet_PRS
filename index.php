@@ -19,7 +19,7 @@
         <script src="js/leaflet-src.js"></script>
         <script src="js/pouchdb-6.1.2.js"></script>
 
-        <script src="js/L.TileLayer.PouchDBCached.js"></script>
+        <script src="js/tile_cached.js"></script>
         <script>
 
             // 		var map = L.map('map').setView([63.41784,10.40359], 5);
@@ -87,7 +87,7 @@
                 console.log('Cache seeding complete');
             });
 
-////////////////////////////////TEST BASE DE :;DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
+            ////////////////////////////////TEST BASE DE :;DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
 
             var prsDB = new PouchDB('localDB');
 
@@ -107,26 +107,37 @@
                 }
             });
 
-            
+
             prsDB.allDocs({include_docs: true}, function(err, docs) {
                 if (err) {
                     return console.log(err);
                 } else {
                     var prs = docs.rows;
-                    console.log(prs);
+                    prs.forEach(function(element) {
+                        var latitudePrs = element.doc.X.replace(",",".");
+                        var longitudePrs = element.doc.Y.replace(",",".");
+                        
+                        var numberPrs = element.doc.NUM;
+                        console.log ( "la latitude du point "+numberPrs+ " est "+ latitudePrs + "la longitude du point courant est :"+ longitudePrs);
+                        var marker = L.marker([ longitudePrs , latitudePrs]).addTo(map);
+                        
+                    });
+
+
+                    /*prs[0].doc.X;*/
                 }
             });
-//////
-///////////////////////////////////////////test pour repliqué une bdd serveur coté client///////////////////////////////////////
-/////
-            
-/*            var test= new PouchDB('essai');
+            //////
+            ///////////////////////////////////////////test pour repliqué une bdd serveur coté client///////////////////////////////////////
+            /////
+
+            /*            var test= new PouchDB('essai');
             var remoteDB = new PouchDB('http://localhost:5984/prs25_test');
             test.replicate.from(remoteDB);*/
-            
 
-            
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -135,3 +146,4 @@
         </script>
     </body>
 </html>
+
