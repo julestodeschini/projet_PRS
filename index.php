@@ -74,7 +74,11 @@
                 console.log('Cache seeding complete');
             });
 
+<<<<<<< HEAD
 ////////////////////////////////TEST BASE DE DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
+=======
+            ////////////////////////////////TEST BASE DE :;DONNÉES/////////////////////////////////////////////////////////////////////////////!!!
+>>>>>>> c696d3192122f0f48e473e45961a97cddc9cc295
 
             var prsDB = new PouchDB('localDB');
 
@@ -116,12 +120,40 @@
                     return console.log(err);
                 } else {
                     var prs = docs.rows;
-                    console.log(prs);
+                    prs.forEach(function(element) {
+                        var latitudePrs = element.doc.X.replace(",",".");
+                        var longitudePrs = element.doc.Y.replace(",",".");
+                        
+                        var numberPrs = element.doc.NUM;
+                        console.log ( "la latitude du point "+numberPrs+ " est "+ latitudePrs + "la longitude du point courant est :"+ longitudePrs);
+                                                var popup = L.popup({minWidth:100},{keepInView:"true"}).setContent("nom: " +numberPrs + "<br />" + "commune: "+location + "<br />" + "descriptif: "+descriptif );
+
+                        var marker = L.marker([longitudePrs , latitudePrs]).addTo(map);
+                        marker.bindPopup(popup);
+                        
+                    });
+
+
+                    /*prs[0].doc.X;*/
                 }
             });
+<<<<<<< HEAD
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+            //////
+            ///////////////////////////////////////////test pour repliqué une bdd serveur coté client///////////////////////////////////////
+            /////
+
+            /*            var test= new PouchDB('essai');
+            var remoteDB = new PouchDB('http://localhost:5984/prs25_test');
+            test.replicate.from(remoteDB);*/
+
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+>>>>>>> c696d3192122f0f48e473e45961a97cddc9cc295
 
 
 
@@ -130,3 +162,4 @@
         </script>
     </body>
 </html>
+
